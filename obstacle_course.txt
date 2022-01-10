@@ -2,8 +2,9 @@
 % Remember to reset odometry when reaching a new Obstacle
 
 
+label "mission"
 
-goto "boxgate"
+goto "wallhug"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "box_dist"
@@ -37,4 +38,32 @@ followline "bm" @v 0.3 : ($crossingblackline==1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
-log  "$drivendist"
+% TODO: what if the wall opening is straight in front of the movable gate opening? Add ifs.
+label "wallhug"
+
+% This is kinda wonky
+ignoreobstacles
+drive @v 0.1 : ($irdistfrontmiddle<0.2)
+ignoreobstacles
+turnr 0.16 90
+fwd 0.2
+turnr 0.10 30
+turnr 0.10 -30
+
+% finding the first gate
+drive @v 0.1 : ($irdistright>0.87)
+fwd 0.475
+turn -90
+
+% Driving through the first gate
+ignoreobstacles
+fwd 0.67
+turn -90
+fwd 0.5
+log "$irdistright"
+drive @v 0.1 : ($irdistright>0.87)
+fwd 0.475
+turn -90
+fwd 0.67
+turn -180
+followline "bm" @v 0.1 : ($crossingblackline==1)
