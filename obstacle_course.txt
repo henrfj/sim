@@ -4,7 +4,7 @@
 
 label "mission"
 
-goto "wallhug"
+goto "boxdist"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxdist"
@@ -47,11 +47,11 @@ followline "bm" @v 0.3 : ($crossingblackline==1)
 log $irdistleft
 drive @v0.3 : ($irdistleft < 0.40)
 ignoreobstacles
-fwd 0.5 @v0.3
+fwd 0.475 @v0.3
 ignoreobstacles
 turn 90
 ignoreobstacles
-drive @v0.3 : ($irdistfrontmiddle < 0.30)
+%drive @v0.3 : ($irdistfrontmiddle < 0.30)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
