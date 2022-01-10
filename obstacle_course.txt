@@ -44,7 +44,14 @@ followline "bm" @v 0.3 : ($crossingblackline==1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gate on the loose
-
+log $irdistleft
+drive @v0.3 : ($irdistleft < 0.40)
+ignoreobstacles
+fwd 0.5 @v0.3
+ignoreobstacles
+turn 90
+ignoreobstacles
+drive @v0.3 : ($irdistfrontmiddle < 0.30)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
