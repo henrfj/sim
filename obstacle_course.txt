@@ -1,6 +1,31 @@
 % This is the full code for the entire course! Have fun you guys :D
-% reset odometry
+% Remember to reset odometry when reaching a new Obstacle
+
+goto "boxgate"
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+label "box_dist"
+fwd 1000000
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+label "boxgate"
 log  "$irdistfrontmiddle"
-fwd 0.1 @v0.1
-followline "bm" @v 0.3:($irdistfrontmiddle<0.15)
-fwd 0.45 @v0.1
+ignoreobstacles
+followline "bl" @v 0.3 : ($irdistfrontmiddle<0.2)
+ignoreobstacles
+fwd 0.55 @v0.1
+fwd -1 @v0.3
+turn -90 @v0.1
+drive @v0.3 : ($crossingblackline==1)
+turnr 0.2 90 
+followline "bm" @v 0.3 : ($crossingblackline==1)
+fwd 0.225
+turn 90
+ignoreobstacles
+followline "bm" @v 0.3 : ($crossingblackline==1)
+ignoreobstacles
+fwd 0.225
+ignoreobstacles
+followline "bm" @v 0.3 : ($crossingblackline==1)
