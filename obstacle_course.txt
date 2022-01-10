@@ -1,7 +1,7 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
 
-% goto "box_dist"
+goto "boxgate"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "box_dist"
@@ -21,7 +21,6 @@ turn 190
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxgate"
-log  "$irdistfrontmiddle"
 ignoreobstacles
 followline "bl" @v 0.3 : ($irdistfrontmiddle<0.2)
 ignoreobstacles
@@ -39,3 +38,11 @@ ignoreobstacles
 fwd 0.225
 ignoreobstacles
 followline "bm" @v 0.3 : ($crossingblackline==1)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gate on the loose
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hug the wall
+log  "$drivendist"
