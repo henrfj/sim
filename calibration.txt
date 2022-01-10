@@ -1,0 +1,8 @@
+fwd 2
+turn 90
+fwd 2
+turn 90
+fwd 2
+turn 90
+fwd 2 
+turn 90

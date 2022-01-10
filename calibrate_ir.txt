@@ -1,0 +1,16 @@
+log "$odox" "$irl" "$irfl" "$irfm" "$irfr" "$irr" 
+wait 1
+fwd 0.1
+wait 1
+fwd 0.1
+wait 1
+fwd 0.1
+wait 1
+fwd 0.1
+wait 1
+fwd 0.1
+wait 1
+ignoreobstacles
+fwd 0.1
+wait 1
+stop
