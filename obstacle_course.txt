@@ -84,3 +84,59 @@ turn -90
 fwd 0.67
 turn -180
 followline "bm" @v 0.1 : ($crossingblackline==1)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% followline
+label "whiteline"
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% followline
+label "garage"
+
+% Hacky solution to go to obstacle 6
+turn 90
+drive @v 0.3 : ($crossingblackline==1)
+turnr 0.2 -90
+
+% Find Garage
+followline "bm" @v 0.3 : ($irdistfrontmiddle<0.2)
+turn -90
+
+% Move up in front of the gate to the edge
+drive @v 0.2 : ($irdistleft>0.87)
+fwd 0.475 % clear the corner
+turn 90
+fwd 0.475 % go along the north wall
+
+% Follow the north wall to the end of the wall
+drive @v 0.2 : ($irdistleft>0.87)
+fwd 0.475 % clear the corner
+turn 90
+fwd 0.3 % go along the west wall
+
+
+% Follow the west wall to the end of the wall
+drive @v 0.2 : ($irdistleft>0.87)
+fwd 0.25 % clear the corner
+turn 90
+ignoreobstacles
+drive : ($irdistfrontleft<0.16)
+ignoreobstacles
+fwd 0.15 @v 0.1 % stop exactly at the gate handle
+ignoreobstacles
+fwd 0.15 % a little bit more
+
+% Now we are holding the gate
+ignoreobstacles
+turnr 0.69 60 @v 0.1 % 0.5 (being the width of the garage) + 0.05 (being distance from wall) + 0.14 (being half the width of the SMR) = 0.69
+
+% Now the gate is open!
+ignoreobstacles
+fwd -0.05
+ignoreobstacles
+turn 100
+ignoreobstacles
+followline "bm" @v 0.2 : ($crossingblackline==1)
+ignoreobstacles
+fwd 0.1
+stop
