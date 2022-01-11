@@ -1,2 +1,0 @@
-followline "br" @v 0.1 :($crossingblackline==1)
-stop
