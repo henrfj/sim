@@ -4,7 +4,7 @@
 
 label "mission"
 
-goto "whiteline"
+goto "boxdist"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxdist"
@@ -87,9 +87,8 @@ fwd 0.475
 turn -90
 fwd 0.67
 turn -180
-followline "bm" @v 0.1 : ($crossingblackline==1)
-
-<<<<<<< HEAD
+followline "bm" @v 0.3 : ($crossingblackline==1)
+goto "garage"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "whiteline"
