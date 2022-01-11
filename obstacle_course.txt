@@ -25,15 +25,15 @@ turn 180
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxgate"
 ignoreobstacles
-followline "bl" @v 0.3 : ($irdistfrontmiddle<0.2)
+followline "bl" @v 0.2 : ($irdistfrontmiddle<0.2)
 ignoreobstacles
-fwd 0.55 @v0.1
+fwd 0.60 @v0.1
 fwd -1 @v0.3
 turn -90 @v0.1
-drive @v0.3 : ($blacklinefound==1)
+drive @v0.2 : ($blacklinefound==1)
 fwd 0.225
 turn -360 : ($crossingblackline==1)
-turn 90 
+turn 90
 followline "bm" @v 0.3 : ($crossingblackline==1)
 fwd 0.225
 turn 90
@@ -43,6 +43,7 @@ ignoreobstacles
 fwd 0.225
 ignoreobstacles
 followline "bm" @v 0.3 : ($crossingblackline==1)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gate on the loose
@@ -73,7 +74,7 @@ turnr 0.10 -30
 
 % finding the first gate
 drive @v 0.1 : ($irdistright>0.87)
-fwd 0.475
+fwd 0.3 %0.475
 turn -90
 
 % Driving through the first gate
@@ -81,11 +82,15 @@ ignoreobstacles
 fwd 0.67
 turn -90
 fwd 0.5
+
+% Finding the second gate
 log "$irdistright"
 drive @v 0.1 : ($irdistright>0.87)
-fwd 0.475
+fwd 0.3 %0.475
+
+% 
 turn -90
-fwd 0.67
+fwd 1
 turn -180
 followline "bm" @v 0.3 : ($crossingblackline==1)
 goto "garage"
