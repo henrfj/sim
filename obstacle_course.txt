@@ -4,11 +4,11 @@
 
 label "mission"
 
-goto "boxdist"
+goto "whiteline"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxdist"
-log "$odoy" "$odoth"
+log "$odoy" "$odoth" "$guidemarkok"
 xstart=$odox
 ystart=$odoy
 followline "br" @v 0.3 : ($drivendist>1.7)
@@ -19,7 +19,7 @@ x = xend-xstart
 y = yend-ystart
 eval sqrt(x*x+y*y)
 turn 180 @v 0.3
-followline "br" @v 0.3 : ($odoth>2.8)
+followline "br" @v 0.3 : ($crossingblackline==1)
 turn 180
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,8 +30,10 @@ ignoreobstacles
 fwd 0.55 @v0.1
 fwd -1 @v0.3
 turn -90 @v0.1
-drive @v0.3 : ($crossingblackline==1)
-turnr 0.2 90 
+drive @v0.3 : ($blacklinefound==1)
+fwd 0.225
+turn -360 : ($crossingblackline==1)
+turn 90 
 followline "bm" @v 0.3 : ($crossingblackline==1)
 fwd 0.225
 turn 90
@@ -44,7 +46,8 @@ followline "bm" @v 0.3 : ($crossingblackline==1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gate on the loose
-log $irdistleft
+label "loosegate"
+log $irdistleft "$guidemarkok"
 drive @v0.3 : ($irdistleft < 0.40)
 ignoreobstacles
 fwd 0.475 @v0.3
@@ -84,3 +87,11 @@ turn -90
 fwd 0.67
 turn -180
 followline "bm" @v 0.1 : ($crossingblackline==1)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+label "whiteline"
+%log "$odoy" "$odoth" "$guidemarkok" "$irdistfrontleft" "$irdistfrontmiddle" "$irdistfrontright"
+%log "$10" "$11" "$12" "$13" "$14" "$15" "$16" "$17" "$18"
+turn -180 @v 0.1
+turn -180 @v 0.1
