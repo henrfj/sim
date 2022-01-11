@@ -45,6 +45,7 @@ followline "bm" @v 0.3 : ($crossingblackline==1)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gate on the loose
 log $irdistleft
+followline "bm" @v 0.3 : ($irdistleft < 0.40) 
 drive @v0.3 : ($irdistleft < 0.40)
 ignoreobstacles
 fwd 0.475 @v0.3
