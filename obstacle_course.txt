@@ -184,7 +184,7 @@ fwd -0.05
 ignoreobstacles
 turn 100
 ignoreobstacles
-followline "bm" @v 0.2 : ($crossingblackline==1)
+followline "bm" @v 0.2 : ($irdistfrontmiddle<0.16)
 ignoreobstacles
 fwd 0.1
 stop
