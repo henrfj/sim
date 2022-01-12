@@ -1,25 +1,24 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
 
+goto "wallhug"
 
 label "mission"
 
-goto "boxdist"
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxdist"
-log "$odoy" "$odoth" "$guidemarkok"
 xstart=$odox
-ystart=$odoy
-followline "br" @v 0.3 : ($drivendist>1.7)
-followline "b2" @v 0.1 : ($irdistfrontmiddle<0.2)
+%ystart=$odoy
+followline "br" @v 0.15 : ($irdistfrontmiddle<0.8)
+followline "bm" @v 0.08 : ($irdistfrontmiddle<0.2)
 xend=$odox+0.2
-yend=$odoy
+% yend=$odoy
 x = xend-xstart
-y = yend-ystart
-eval sqrt(x*x+y*y)
-turn 180 @v 0.3
-followline "br" @v 0.3 : ($crossingblackline==1)
+%y = yend-ystart
+%eval sqrt(x*x+y*y)
+eval x
+turn 180 @v 0.15
+followline "br" @v 0.15 : ($crossingblackline==1)
 turn 180
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,107 +26,77 @@ label "boxgate"
 ignoreobstacles
 followline "bl" @v 0.2 : ($irdistfrontmiddle<0.2)
 ignoreobstacles
-fwd 0.60 @v0.1
+drive @v0.2 : ($crossingblackline==1)
+ignoreobstacles
+fwd 0.20
 fwd -1 @v0.3
 turn -90 @v0.1
 drive @v0.2 : ($blacklinefound==1)
-fwd 0.225
+ignoreobstacles
+fwd 0.20
+ignoreobstacles
 turn -360 : ($crossingblackline==1)
 turn 90
-followline "bm" @v 0.3 : ($crossingblackline==1)
-fwd 0.225
+followline "bm" @v 0.22 : ($crossingblackline==1)
+fwd 0.25
 turn 90
 ignoreobstacles
-followline "bm" @v 0.3 : ($crossingblackline==1)
+followline "bm" @v 0.22 : ($crossingblackline==1)
 ignoreobstacles
 fwd 0.225
 ignoreobstacles
-followline "bm" @v 0.3 : ($crossingblackline==1)
+followline "bm" @v 0.22 : ($crossingblackline==1)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%BRUTE FORCE
-%label "loosegate"
-%log $irdistleft "$guidemarkok"
-%followline "bm" @v 0.3 : ($irdistleft < 0.40)
-%ignoreobstacles
-%fwd 0.475 @v0.3
-%ignoreobstacles
-%turn 90
-%ignoreobstacles
-%drive @v0.3 : ($irdistfrontmiddle < 0.30)
-
-%LIDAR. TODO: gate width logic
+label "loosegate"
 laser "scanpush cmd='zoneobst'"
-
-smrsize = 0.35
-gatefound = -1
-label "reset"
-gatefound = gatefound + 1
-lasermin = 10
-%log "gatefound" "lasermin"
-
-label "init"
-left = $l0
-if (left > lasermin | left == 0) "continue"
-lasermin = left
-
-label "continue"
-if (left < lasermin + 0.4) "continue2" %we have found starting of the gate
-odostart = $ododist
-if (gatefound == 2) "gatedone"
-goto "reset"
-
-label "continue2"
-followline "bm" @v 0.3 : ($drivendist>0.01)
-if (gatefound == 2) "gatedone"
-goto "init"
-
-label "gatedone"
-gatewidth = $ododist - odostart
-gotomiddle = (gatewidth - smrsize/2)/2
-log "$ododist" "odostart" "gatewidth" "smrsize" "gotomiddle"
-ignoreobstacles
-turn -180
-drive @v 0.3 : ($drivendist> gotomiddle)
-turn -90
-
+log "$ododist" "$l0"
+followline "bm" @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found left side of the gate
+temp = $l0
+followline "bm" @v 0.1 : ($drivendist > 0.04) %make it more robust
+drive @v 0.1 : ($l0 >temp)
+followline "bm" @v 0.1 : ($drivendist > 0.1) %move forward not to itnerfere with left gate
+followline "bm" @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found right side of the gate
+temp = $l0
+followline "bm" @v 0.1 : ($drivendist > 0.04) %make it more robust
+drive @v 0.1 : ($l0 >temp)
+turn 90
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
 % TODO: what if the wall opening is straight in front of the movable gate opening? Add ifs.
 label "wallhug"
+log "$irdistfrontmiddle" "$irdistright"
 
 % This is kinda wonky
 ignoreobstacles
-drive @v 0.1 : ($irdistfrontmiddle<0.2)
+drive @v 0.2 : ($irdistfrontmiddle<0.3)
 ignoreobstacles
-turnr 0.16 90
-fwd 0.2
-turnr 0.10 30
-turnr 0.10 -30
+turn 90
+%fwd 0.2
+%turnr 0.10 30
+%turnr 0.10 -30
 
 % finding the first gate
-drive @v 0.1 : ($irdistright>0.87)
-fwd 0.3 %0.475
+drive @v 0.1 : ($irdistright>0.45)
+fwd 0.41 %0.26+0.15
 turn -90
 
 % Driving through the first gate
 ignoreobstacles
-fwd 0.67
+fwd 0.95 %two times distance from the wall + length of the robot
 turn -90
-fwd 0.5
+fwd 0.6 %must be more than 0.41 from line 83
 
 % Finding the second gate
 log "$irdistright"
-drive @v 0.1 : ($irdistright>0.87)
-fwd 0.3 %0.475
-
-% 
+drive @v 0.1 : ($irdistright>0.45)
+fwd 0.41 %0.26+0.15
 turn -90
 fwd 1
 turn -180
-followline "bm" @v 0.3 : ($crossingblackline==1)
+followline "bm" @v 0.2 : ($crossingblackline==1)
 goto "garage"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
