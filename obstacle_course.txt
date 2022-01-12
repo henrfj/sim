@@ -1,7 +1,7 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
 
-goto "garage"
+goto "boxdist"
 
 label "mission"
 
@@ -11,6 +11,7 @@ xstart=$odox
 %ystart=$odoy
 followline "br" @v 0.15 : ($irdistfrontmiddle<0.8)
 followline "bm" @v 0.08 : ($irdistfrontmiddle<0.2)
+fflsuhdsfhgosghkhu
 xend=$odox+0.2
 % yend=$odoy
 x = xend-xstart
