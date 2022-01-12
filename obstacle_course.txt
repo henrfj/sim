@@ -1,7 +1,7 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
 
-goto "mission"
+goto "garage"
 
 label "mission"
 
@@ -29,7 +29,7 @@ ignoreobstacles
 drive @v0.1 : ($crossingblackline==1)
 ignoreobstacles
 fwd 0.20 @v0.1
-fwd -1 @v0.3
+fwd -1 @v0.2
 turn -90 @v0.1
 drive @v0.2 : ($blacklinefound==1)
 ignoreobstacles
@@ -107,7 +107,7 @@ eval background
 ignoreobstacles
 followline "bm" @v 0.1 : (128<$lineraw0>0) | (128<$lineraw1>0) | (128<$lineraw2>0) | (128<$lineraw3>0) | (128<$lineraw4>0) | (128<$lineraw5>0) | (128<$lineraw6>0) | (128<$lineraw7>0)
 ignoreobstacles
-followline "wm" @v 0.2 : ($crossingblackline==1)
+followline "wm" @v 0.15 : ($crossingblackline==1)
 fwd 0.30
 turn -90
 
@@ -121,7 +121,7 @@ label "garage"
 %turnr 0.2 -90
 
 % Find Garage
-followline "bm" @v 0.3 : ($irdistfrontmiddle<0.2)
+followline "bm" @v 0.2 : ($irdistfrontmiddle<0.2)
 turn -90
 
 % Move up in front of the gate to the edge
@@ -150,7 +150,7 @@ fwd 0.15 % a little bit more
 
 % Now we are holding the gate
 ignoreobstacles
-turnr 0.69 60 @v 0.1 % 0.5 (being the width of the garage) + 0.05 (being distance from wall) + 0.14 (being half the width of the SMR) = 0.69
+turnr 0.8 70 @v 0.1 % 0.5 (being the width of the garage) + 0.05 (being distance from wall) + 0.14 (being half the width of the SMR) = 0.69
 
 % Now the gate is open!
 ignoreobstacles
