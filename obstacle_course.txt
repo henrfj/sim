@@ -4,7 +4,7 @@
 
 label "mission"
 
-goto "boxdist"
+goto "garage"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxdist"
@@ -142,9 +142,9 @@ turn -180 @v 0.1
 label "garage"
 
 % Hacky solution to go to obstacle 6
-turn 90
-drive @v 0.3 : ($crossingblackline==1)
-turnr 0.2 -90
+%turn 90
+%drive @v 0.3 : ($crossingblackline==1)
+%turnr 0.2 -90
 
 % Find Garage
 followline "bm" @v 0.3 : ($irdistfrontmiddle<0.2)
@@ -165,7 +165,7 @@ fwd 0.3 % go along the west wall
 
 % Follow the west wall to the end of the wall
 drive @v 0.2 : ($irdistleft>0.87)
-fwd 0.25 % clear the corner
+fwd 0.45 % clear the corner
 turn 90
 ignoreobstacles
 drive : ($irdistfrontleft<0.16)
@@ -184,7 +184,7 @@ fwd -0.05
 ignoreobstacles
 turn 100
 ignoreobstacles
-followline "bm" @v 0.2 : ($irdistfrontmiddle<0.16)
+followline "bm" @v 0.2 :($drivendist>0.5)
 ignoreobstacles
-fwd 0.1
+followline "bm" @v 0.3 : ($irdistfrontmiddle<0.2)
 stop
