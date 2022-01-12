@@ -102,18 +102,25 @@ goto "garage"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "whiteline"
 %log "$odoy" "$odoth" "$guidemarkok" "$irdistfrontleft" "$irdistfrontmiddle" "$irdistfrontright"
-%log "$10" "$11" "$12" "$13" "$14" "$15" "$16" "$17" "$18"
-turn -180 @v 0.1
-turn -180 @v 0.1
+log "$lineraw0" "$lineraw1" "$lineraw2" "$lineraw3" "$lineraw4" "$lineraw5" "$lineraw6" "$lineraw7"  
+background=$line0
+eval background
+ignoreobstacles
+followline "bm" @v 0.1 : (128<$lineraw0>0) | (128<$lineraw1>0) | (128<$lineraw2>0) | (128<$lineraw3>0) | (128<$lineraw4>0) | (128<$lineraw5>0) | (128<$lineraw6>0) | (128<$lineraw7>0)
+ignoreobstacles
+followline "wm" @v 0.2 : ($crossingblackline==1)
+fwd 0.30
+turn -90
 
+%goto "stopprogram"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % followline
 label "garage"
 
 % Hacky solution to go to obstacle 6
-turn 90
-drive @v 0.3 : ($crossingblackline==1)
-turnr 0.2 -90
+%turn 90
+%drive @v 0.3 : ($crossingblackline==1)
+%turnr 0.2 -90
 
 % Find Garage
 followline "bm" @v 0.3 : ($irdistfrontmiddle<0.2)
@@ -134,7 +141,7 @@ fwd 0.3 % go along the west wall
 
 % Follow the west wall to the end of the wall
 drive @v 0.2 : ($irdistleft>0.87)
-fwd 0.25 % clear the corner
+fwd 0.45 % clear the corner
 turn 90
 ignoreobstacles
 drive : ($irdistfrontleft<0.16)
@@ -153,7 +160,8 @@ fwd -0.05
 ignoreobstacles
 turn 100
 ignoreobstacles
-followline "bm" @v 0.2 : ($crossingblackline==1)
+followline "bm" @v 0.2 :($drivendist>0.5)
 ignoreobstacles
-fwd 0.1
+followline "bm" @v 0.3 : ($irdistfrontmiddle<0.2)
 stop
+label "stopprogram"
