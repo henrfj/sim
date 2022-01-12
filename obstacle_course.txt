@@ -1,7 +1,7 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
 
-goto "wallhug"
+goto "mission"
 
 label "mission"
 
@@ -26,9 +26,9 @@ label "boxgate"
 ignoreobstacles
 followline "bl" @v 0.2 : ($irdistfrontmiddle<0.2)
 ignoreobstacles
-drive @v0.2 : ($crossingblackline==1)
+drive @v0.1 : ($crossingblackline==1)
 ignoreobstacles
-fwd 0.20
+fwd 0.20 @v0.1
 fwd -1 @v0.3
 turn -90 @v0.1
 drive @v0.2 : ($blacklinefound==1)
@@ -71,7 +71,7 @@ log "$irdistfrontmiddle" "$irdistright"
 
 % This is kinda wonky
 ignoreobstacles
-drive @v 0.2 : ($irdistfrontmiddle<0.3)
+drive @v 0.2 : ($irdistfrontmiddle<0.25)
 ignoreobstacles
 turn 90
 %fwd 0.2
@@ -80,24 +80,23 @@ turn 90
 
 % finding the first gate
 drive @v 0.1 : ($irdistright>0.45)
-fwd 0.41 %0.26+0.15
+fwd 0.42 %0.26+0.15+small gap(5cm)
 turn -90
 
 % Driving through the first gate
 ignoreobstacles
-fwd 0.95 %two times distance from the wall + length of the robot
+fwd 0.85 %two times distance from the wall + length of the robot
 turn -90
 fwd 0.6 %must be more than 0.41 from line 83
 
 % Finding the second gate
 log "$irdistright"
 drive @v 0.1 : ($irdistright>0.45)
-fwd 0.41 %0.26+0.15
+fwd 0.42 %0.26+0.15+small gap(5cm)
 turn -90
 fwd 1
 turn -180
 followline "bm" @v 0.2 : ($crossingblackline==1)
-goto "garage"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "whiteline"
@@ -112,7 +111,6 @@ followline "wm" @v 0.2 : ($crossingblackline==1)
 fwd 0.30
 turn -90
 
-%goto "stopprogram"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % followline
 label "garage"
@@ -162,6 +160,6 @@ turn 100
 ignoreobstacles
 followline "bm" @v 0.2 :($drivendist>0.5)
 ignoreobstacles
-followline "bm" @v 0.3 : ($irdistfrontmiddle<0.2)
+followline "bm" @v 0.2 : ($irdistfrontmiddle<0.2)
 stop
 label "stopprogram"
