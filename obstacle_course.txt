@@ -46,17 +46,52 @@ followline "bm" @v 0.3 : ($crossingblackline==1)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Gate on the loose
-
-label "loosegate"
-log $irdistleft "$guidemarkok"
-followline "bm" @v 0.3 : ($irdistleft < 0.40)
-ignoreobstacles
-fwd 0.475 @v0.3
-ignoreobstacles
-turn 90
-ignoreobstacles
+%BRUTE FORCE
+%label "loosegate"
+%log $irdistleft "$guidemarkok"
+%followline "bm" @v 0.3 : ($irdistleft < 0.40)
+%ignoreobstacles
+%fwd 0.475 @v0.3
+%ignoreobstacles
+%turn 90
+%ignoreobstacles
 %drive @v0.3 : ($irdistfrontmiddle < 0.30)
+
+%LIDAR. TODO: gate width logic
+laser "scanpush cmd='zoneobst'"
+
+smrsize = 0.35
+gatefound = -1
+label "reset"
+gatefound = gatefound + 1
+lasermin = 10
+%log "gatefound" "lasermin"
+
+label "init"
+left = $l0
+if (left > lasermin | left == 0) "continue"
+lasermin = left
+
+label "continue"
+if (left < lasermin + 0.4) "continue2" %we have found starting of the gate
+odostart = $ododist
+if (gatefound == 2) "gatedone"
+goto "reset"
+
+label "continue2"
+followline "bm" @v 0.3 : ($drivendist>0.01)
+if (gatefound == 2) "gatedone"
+goto "init"
+
+label "gatedone"
+gatewidth = $ododist - odostart
+gotomiddle = (gatewidth - smrsize/2)/2
+log "$ododist" "odostart" "gatewidth" "smrsize" "gotomiddle"
+ignoreobstacles
+turn -180
+drive @v 0.3 : ($drivendist> gotomiddle)
+turn -90
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
