@@ -140,7 +140,9 @@ fwd 0.3 % go along the west wall
 
 
 % Follow the west wall to the end of the wall
+ignoreobstacles
 drive @v 0.1 : ($irdistleft>0.87)
+ignoreobstacles
 fwd 0.45 % clear the corner
 turn 90
 ignoreobstacles
@@ -158,7 +160,9 @@ turnr 0.8 70 @v 0.1 % 0.5 (being the width of the garage) + 0.05 (being distance
 ignoreobstacles
 fwd -0.05
 ignoreobstacles
-turn 100
+turn 110
+ignoreobstacles
+fwd -0.05
 ignoreobstacles
 followline "bm" @v 0.1 :($drivendist>0.5)
 ignoreobstacles
