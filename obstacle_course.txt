@@ -6,17 +6,14 @@ goto "mission"
 label "mission"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-label "boxdist"
-xstart=$odox
-%ystart=$odoy
-followline "br" @v 0.15 : ($irdistfrontmiddle<0.8)
+label "boxdist" %odox is facing infront of the robot and y to the left side
+log "$odox" "$odoy" 
+ystart=$odoy 
+followline "br" @v 0.12 : ($irdistfrontmiddle<0.8)
 followline "bm" @v 0.08 : ($irdistfrontmiddle<0.2)
-xend=$odox+0.2
-% yend=$odoy
-x = xend-xstart
-%y = yend-ystart
-%eval sqrt(x*x+y*y)
-eval x
+yend=$odoy
+y = ystart-yend
+eval (y+0.2+0.26) %0.26 center of gravity + 0.2 the distance from box %eval sqrt(x*x+y*y)
 turn 180 @v 0.15
 followline "bl" @v 0.15 : ($crossingblackline==1 & $drivendist>0.7)
 turn 180
@@ -114,7 +111,7 @@ ignoreobstacles
 followline "wm" @v 0.15 : ($crossingblackline==1)
 fwd 0.30
 turn -90
-goto "stopprogram"
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % followline
 label "garage"
@@ -164,7 +161,6 @@ fwd -0.05
 ignoreobstacles
 turn 110
 ignoreobstacles
-fwd -0.05
 ignoreobstacles
 followline "bm" @v 0.1 :($drivendist>0.5)
 ignoreobstacles
