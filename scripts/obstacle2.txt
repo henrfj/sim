@@ -1,0 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+label "boxgate"
+ignoreobstacles
+followline "bl" @v 0.2 : ($irdistfrontmiddle<0.2)
+ignoreobstacles
+drive @v0.1 : ($crossingblackline==1)
+ignoreobstacles
+fwd 0.20 @v0.1
+fwd -1 @v0.2
+turn -90 @v0.1
+drive @v0.2 : ($blacklinefound==1)
+ignoreobstacles
+fwd 0.20
+ignoreobstacles
+turn -360 : ($crossingblackline==1)
+turn 90
+followline "bm" @v 0.22 : ($crossingblackline==1)
+fwd 0.25
+turn 90
+ignoreobstacles
+followline "bm" @v 0.22 : ($crossingblackline==1)
+ignoreobstacles
+fwd 0.225
+ignoreobstacles
+followline "bm" @v 0.22 : ($crossingblackline==1)

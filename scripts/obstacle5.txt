@@ -1,0 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+label "whiteline"
+%log "$odoy" "$odoth" "$guidemarkok" "$irdistfrontleft" "$irdistfrontmiddle" "$irdistfrontright"
+log "$lineraw0" "$lineraw1" "$lineraw2" "$lineraw3" "$lineraw4" "$lineraw5" "$lineraw6" "$lineraw7"  
+background=$line0
+eval background
+ignoreobstacles
+followline "bm" @v 0.1 : (128<$lineraw0>0) | (128<$lineraw1>0) | (128<$lineraw2>0) | (128<$lineraw3>0) | (128<$lineraw4>0) | (128<$lineraw5>0) | (128<$lineraw6>0) | (128<$lineraw7>0)
+ignoreobstacles
+followline "wm" @v 0.2 : ($crossingblackline==1)
+fwd 0.30
+turn -90

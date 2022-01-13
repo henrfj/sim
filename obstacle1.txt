@@ -1,0 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+label "boxdist"
+xstart=$odox
+%ystart=$odoy
+followline "br" @v 0.15 : ($irdistfrontmiddle<0.8)
+followline "bm" @v 0.08 : ($irdistfrontmiddle<0.2)
+xend=$odox+0.2
+% yend=$odoy
+x = xend-xstart
+%y = yend-ystart
+%eval sqrt(x*x+y*y)
+eval x
+turn 180 @v 0.15
+followline "br" @v 0.15 : ($crossingblackline==1)
+turn 180
