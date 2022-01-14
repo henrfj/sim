@@ -1,7 +1,7 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
 
-goto "whiteline"
+goto "mission"
 
 label "mission"
 
@@ -18,9 +18,7 @@ x = xend-xstart
 %eval sqrt(x*x+y*y)
 eval x
 turn 180 @v 0.15
-followline "bm" @v 0.15 : ($crossingblackline==1)
-fwd 0.1
-followline "bl" @v 0.15 : ($crossingblackline==1)
+followline "bl" @v 0.15 : ($crossingblackline==1 & $drivendist>0.7)
 turn 180
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,20 +54,19 @@ laser "scanpush cmd='zoneobst'"
 log "$ododist" "$l0"
 followline "bm" @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found left side of the gate
 temp = $l0
-followline "bm" @v 0.1 : ($drivendist > 0.04) %make it more robust
-drive @v 0.1 : ($l0 >temp)
+drive @v 0.1 : ($l0 >(temp+0.04)) %0.04 to make it more robust
 followline "bm" @v 0.1 : ($drivendist > 0.1) %move forward not to itnerfere with left gate
 followline "bm" @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found right side of the gate
 temp = $l0
-followline "bm" @v 0.1 : ($drivendist > 0.04) %make it more robust
-drive @v 0.1 : ($l0 >temp)
+drive @v 0.1 : ($l0 >(temp+0.04)) %0.04 to make it more robust
 turn 90
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
 % TODO: what if the wall opening is straight in front of the movable gate opening? Add ifs.
 label "wallhug"
-log "$irdistfrontmiddle" "$irdistright"
+laser "scanpush cmd='zoneobst'"
+log "irdistright" "irdistfrontmiddle" "irdistleft" "$l0"
 
 % This is kinda wonky
 ignoreobstacles
@@ -81,19 +78,24 @@ turn 90
 %turnr 0.10 -30
 
 % finding the first gate
-drive @v 0.1 : ($irdistright>0.8)
+followwall "r" 0.35 @v 0.1: ($irdistright>0.8)
 fwd 0.42 %0.26+0.15+small gap(5cm)
 turn -90
 
 % Driving through the first gate
-ignoreobstacles
-fwd 0.65 %two times distance from the wall + length of the robot
+% drive @v 0.1 : ($l0 < 0.8 & $l0 > 0) %robust solutuin to detect the end of the wall
+% temp = $l8
+% drive @v 0.1 : ($l8 >temp+0.05) %0.04 to make it more robust
+
+drive @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found left side of the gate
+temp = $l0
+drive @v 0.1 : ($l0 >(temp+0.4)) %0.4 to make it more robust
+fwd 0.66 % 0.36(robot L) +0.35(distance from wall) -0.05(wall difference)
 turn -90
-fwd 0.6 %must be more than 0.41 from line 83
+fwd 0.2 % move forward to detect the wall
 
 % Finding the second gate
-log "$irdistright"
-drive @v 0.1 : ($irdistright>0.8)
+followwall "r" 0.35 @v 0.1: ($irdistright>0.8)
 fwd 0.42 %0.26+0.15+small gap(5cm)
 turn -90
 fwd 1
