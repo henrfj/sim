@@ -22,6 +22,7 @@
   <robot>
     <mrcserver port="8000"/>
     <clients number="5"/>
+<<<<<<< HEAD
     <params name="smr0" robotpose="4.5 4.8 3.141" wheelbase="0.26" encresolution="0.00010245"/> <!--
 obstacle 4: 5.75 3.89 3.141, 
 start: 3.5 -0.1 1.57079632679, 
@@ -30,11 +31,18 @@ obstacle 6: 3.5 4.8 3.141
 garage: "3.5 2.2 3.141""-->
     <params name="smr0" robotpose="3.5 4.8 3.141" wheelbase="0.26" encresolution="0.00010245"/> <!--
   obstacle 4: 5.75 3.89 3.141, 
+=======
+    <params name="smr0" robotpose="3.5 -0.1 1.57079632679" wheelbase="0.26" encresolution="0.00010245"/> <!--
+>>>>>>> b9c1289f075cc93e3748a1f77157a7f86d613ac7
   start: 3.5 -0.1 1.57079632679, 
   obstacle 3: 5.75 2.7 1.57079632679 
+  obstacle 4: 5.75 3.89 3.141, 
   obstacle 6: 3.5 4.8 3.141 
   garage: "3.5 2.2 3.141""-->
+<<<<<<< HEAD
 
+=======
+>>>>>>> b9c1289f075cc93e3748a1f77157a7f86d613ac7
     <corner x="-0.1" y="-0.15"/>
     <corner x="0.25" y="-0.15"/>
     <corner x="0.25" y="0.15"/>

@@ -6,17 +6,14 @@ goto "mission"
 label "mission"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-label "boxdist"
-xstart=$odox
-%ystart=$odoy
-followline "br" @v 0.15 : ($irdistfrontmiddle<0.8)
+label "boxdist" %odox is facing infront of the robot and y to the left side
+log "$odox" "$odoy" 
+ystart=$odoy 
+followline "br" @v 0.12 : ($irdistfrontmiddle<0.8)
 followline "bm" @v 0.08 : ($irdistfrontmiddle<0.2)
-xend=$odox+0.2
-% yend=$odoy
-x = xend-xstart
-%y = yend-ystart
-%eval sqrt(x*x+y*y)
-eval x
+yend=$odoy
+y = ystart-yend
+eval (y+0.2+0.26) %0.26 center of gravity + 0.2 the distance from box %eval sqrt(x*x+y*y)
 turn 180 @v 0.15
 followline "bl" @v 0.15 : ($crossingblackline==1 & $drivendist>0.7)
 turn 180
@@ -111,13 +108,14 @@ eval background
 ignoreobstacles
 followline "bm" @v 0.1 : (($line0!=0) & ($line1!=0) & ($line2!=0) & ($line3!=0) & ($line4!=0) & ($line5!=0) & ($line6!=0) & ($line7!=0))
 ignoreobstacles
-followline "wm" @v 0.15 : ($crossingblackline==1)
+followline "wm" @v 0.2 : ($crossingblackline==1)
 fwd 0.30
 turn -90
-goto "stopprogram"
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % followline
 label "garage"
+log "$irdistleft"
 
 % Hacky solution to go to obstacle 6
 %turn 90
@@ -130,27 +128,27 @@ turn -90
 
 % Move up in front of the gate to the edge
 drive @v 0.1 : ($irdistleft>0.87)
-fwd 0.475 % clear the corner
+fwd 0.5 % clear the corner
 turn 90
-fwd 0.475 % go along the north wall
+fwd 0.25 % go along the north wall
 
 % Follow the north wall to the end of the wall
-drive @v 0.1 : ($irdistleft>0.87)
-fwd 0.475 % clear the corner
+followwall "l" 0.178 @v 0.1: ($irdistleft>0.87)
+fwd 0.5 % clear the corner
 turn 90
-fwd 0.3 % go along the west wall
-
+fwd 0.15 % go along the west wall
 
 % Follow the west wall to the end of the wall
 ignoreobstacles
-drive @v 0.1 : ($irdistleft>0.87)
+followwall "l" 0.178 @v 0.1: ($irdistleft>0.87)
 ignoreobstacles
 fwd 0.45 % clear the corner
 turn 90
+fwd 0.10 % go into the south wall
 ignoreobstacles
-drive : ($irdistfrontleft<0.16)
+followwall "l" 0.128 @v 0.1 : ($irdistfrontleft<0.16)
 ignoreobstacles
-fwd 0.15 @v 0.1 % stop exactly at the gate handle
+fwd 0.10 @v 0.1 % stop exactly at the gate handle
 ignoreobstacles
 %fwd 0.15 % a little bit more
 
@@ -164,7 +162,6 @@ fwd -0.05
 ignoreobstacles
 turn 110
 ignoreobstacles
-fwd -0.05
 ignoreobstacles
 followline "bm" @v 0.1 :($drivendist>0.5)
 ignoreobstacles
