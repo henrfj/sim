@@ -1,16 +1,16 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
 
-goto "mission"
+goto "garage"
 
 label "mission"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxdist" %odox is facing infront of the robot and y to the left side
-log "$odox" "$odoy" 
-ystart=$odoy 
-followline "br" @v 0.12 : ($irdistfrontmiddle<0.8)
-followline "bm" @v 0.08 : ($irdistfrontmiddle<0.2)
+laser "scanpush cmd='zoneobst'"
+ystart=$odoy
+followline "br" @v 0.12 : ($l4<0.8)
+followline "bm" @v 0.08 : ($l4<0.2)
 yend=$odoy
 y = ystart-yend
 eval (y+0.2+0.26) %0.26 center of gravity + 0.2 the distance from box %eval sqrt(x*x+y*y)
@@ -20,8 +20,9 @@ turn 180
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "boxgate"
+laser "scanpush cmd='zoneobst'"
 ignoreobstacles
-followline "bl" @v 0.2 : ($irdistfrontmiddle<0.2)
+followline "bl" @v 0.2 : ($l4<0.2)
 ignoreobstacles
 drive @v0.1 : ($crossingblackline==1)
 ignoreobstacles
@@ -33,10 +34,10 @@ ignoreobstacles
 fwd 0.20
 ignoreobstacles
 turn -360 : ($crossingblackline==1)
-turn 90
+turn 90 @v 0.2
 followline "bm" @v 0.22 : ($crossingblackline==1)
 fwd 0.25
-turn 90
+turn 90 @v 0.2
 ignoreobstacles
 followline "bm" @v 0.22 : ($crossingblackline==1)
 ignoreobstacles
@@ -48,7 +49,6 @@ followline "bm" @v 0.22 : ($crossingblackline==1)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "loosegate"
 laser "scanpush cmd='zoneobst'"
-log "$ododist" "$l0"
 followline "bm" @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found left side of the gate
 temp = $l0
 drive @v 0.1 : ($l0 >(temp+0.04)) %0.04 to make it more robust
@@ -56,26 +56,20 @@ followline "bm" @v 0.1 : ($drivendist > 0.1) %move forward not to itnerfere with
 followline "bm" @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found right side of the gate
 temp = $l0
 drive @v 0.1 : ($l0 >(temp+0.04)) %0.04 to make it more robust
-turn 90
+turn 90 @v 0.2
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
-% TODO: what if the wall opening is straight in front of the movable gate opening? Add ifs.
 label "wallhug"
 laser "scanpush cmd='zoneobst'"
-log "irdistright" "irdistfrontmiddle" "irdistleft" "$l0"
-
-% This is kinda wonky
-ignoreobstacles
-drive @v 0.2 : ($irdistfrontmiddle<0.25)
-ignoreobstacles
-turn 90
-%fwd 0.2
-%turnr 0.10 30
-%turnr 0.10 -30
+log "irdistright" "irdistfrontmiddle" "$l0" "$l4"
+fwd 0.3 @v 0.2
+drive @v 0.2 : ($l4<0.25)
+turn 90 @v 0.2
+walldist = $irdistright
 
 % finding the first gate
-followwall "r" 0.35 @v 0.1: ($irdistright>0.8)
+followwall "r" walldist @v 0.15: ($irdistright>0.87)
 fwd 0.42 %0.26+0.15+small gap(5cm)
 turn -90
 
@@ -92,7 +86,8 @@ turn -90
 fwd 0.2 % move forward to detect the wall
 
 % Finding the second gate
-followwall "r" 0.35 @v 0.1: ($irdistright>0.8)
+walldist = $irdistright
+followwall "r" walldist @v 0.15: ($irdistright>0.87)
 fwd 0.42 %0.26+0.15+small gap(5cm)
 turn -90
 fwd 1
@@ -101,8 +96,7 @@ followline "bm" @v 0.2 : ($crossingblackline==1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 label "whiteline"
-%log "$odoy" "$odoth" "$guidemarkok" "$irdistfrontleft" "$irdistfrontmiddle" "$irdistfrontright"
-log "$line0" "$line1" "$line2" "$line3" "$line4" "$line5" "$line6" "$line7"  
+laser "scanpush cmd='zoneobst'" 
 background=$line0 $line1 $line2 $line3 $line4 $line5 $line6 $line7 
 eval background
 ignoreobstacles
@@ -115,53 +109,49 @@ turn -90
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % followline
 label "garage"
-log "$irdistleft"
-
-% Hacky solution to go to obstacle 6
-%turn 90
-%drive @v 0.2 : ($crossingblackline==1)
-%turnr 0.2 -90
+laser "scanpush cmd='zoneobst'"
+turn 180
+turn 180
 
 % Find Garage
-followline "bm" @v 0.1 : ($irdistfrontmiddle<0.2)
+followline "bm" @v 0.2 : ($l4<0.2)
 turn -90
 
 % Move up in front of the gate to the edge
 drive @v 0.1 : ($irdistleft>0.87)
 fwd 0.5 % clear the corner
-turn 90
-fwd 0.25 % go along the north wall
+turn 90 @v 0.2
+fwd 0.3 % go along the north wall
 
 % Follow the north wall to the end of the wall
-followwall "l" 0.178 @v 0.1: ($irdistleft>0.87)
+walldist = $irdistleft
+followwall "l" walldist @v 0.15: ($drivendist>0.5)
+drive @v 0.1 : ($irdistleft>0.87)
+%radius = (walldist+0.1+0.485+0.3)/2 %gaps+robotwidth+garage
+% turnr radius 180 @v 0.1 %dont delete these 2 cmnds
 fwd 0.5 % clear the corner
-turn 90
+turn 90 @v 0.2
 fwd 0.15 % go along the west wall
 
 % Follow the west wall to the end of the wall
-ignoreobstacles
-followwall "l" 0.178 @v 0.1: ($irdistleft>0.87)
-ignoreobstacles
+walldist = $irdistleft
+followwall "l" walldist @v 0.15: ($drivendist>0.3)
+drive @v 0.1 : ($irdistleft>0.87)
 fwd 0.45 % clear the corner
-turn 90
+turn 90 @v 0.2
 fwd 0.10 % go into the south wall
 ignoreobstacles
-followwall "l" 0.128 @v 0.1 : ($irdistfrontleft<0.16)
+drive @v 0.1 : ($irdistfrontleft<0.16)
 ignoreobstacles
-fwd 0.10 @v 0.1 % stop exactly at the gate handle
-ignoreobstacles
-%fwd 0.15 % a little bit more
+fwd 0.18 @v 0.1 % stop exactly at the gate handle
 
 % Now we are holding the gate
 ignoreobstacles
-turnr 0.8 70 @v 0.1 % 0.5 (being the width of the garage) + 0.05 (being distance from wall) + 0.14 (being half the width of the SMR) = 0.69
+turnr 0.85 70 @v 0.1 % 0.5 (being the width of the garage) + 0.05 (being distance from wall) + 0.14 (being half the width of the SMR) = 0.69
 
 % Now the gate is open!
-ignoreobstacles
 fwd -0.05
-ignoreobstacles
 turn 110
-ignoreobstacles
 ignoreobstacles
 followline "bm" @v 0.1 :($drivendist>0.5)
 ignoreobstacles
