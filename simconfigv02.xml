@@ -22,7 +22,7 @@
   <robot>
     <mrcserver port="8000"/>
     <clients number="5"/>
-    <params name="smr0" robotpose="2.5 2.2 3.141 " wheelbase="0.26" encresolution="0.00010245"/>
+    <params name="smr0" robotpose="3.5 -0.1 1.57079632679" wheelbase="0.26" encresolution="0.00010245"/>
     <!--
   start: 3.5 -0.1 1.57079632679, 
   obstacle 3: 5.75 2.7 1.57079632679 
