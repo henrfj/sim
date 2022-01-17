@@ -1,7 +1,9 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
+% FINAL VERSION MONDAY 17.11.2021 19:00
 
-goto "garage"
+
+goto "mission"
 
 label "mission"
 
@@ -56,8 +58,9 @@ drive @v 0.1 : ($l0 >(temp+0.04)) %0.04 to make it more robust
 followline "bm" @v 0.1 : ($drivendist > 0.1) %move forward not to itnerfere with left gate
 followline "bm" @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found right side of the gate
 temp = $l0
-drive @v 0.1 : ($l0 >(temp+0.04)) %0.04 to make it more robust
-turn 90 @v 0.2
+drive @v 0.1 : ($l0 >temp+0.04)
+fwd -0.02
+turn 90 @v 0.1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hug the wall
@@ -66,33 +69,28 @@ laser "scanpush cmd='zoneobst'"
 log "irdistright" "irdistfrontmiddle" "$l0" "$l4"
 fwd 0.3 @v 0.2
 drive @v 0.2 : ($irdistfrontmiddle<0.25)
-turn 90 @v 0.2
-fwd 0.05 @v 0.05
+turn 90 @v 0.1
 walldist = $irdistright
 eval walldist
 % finding the first gate
-followwall "r" 0.35 @v 0.15: ($irdistright>0.87)
+followwall "r" 0.35 @v 0.1: ($irdistright>0.87)
 fwd 0.42 %0.26+0.15+small gap(5cm)
-turn -90
+turn -90 @v 0.1
 
 % Driving through the first gate
-% drive @v 0.1 : ($l0 < 0.8 & $l0 > 0) %robust solutuin to detect the end of the wall
-% temp = $l8
-% drive @v 0.1 : ($l8 >temp+0.05) %0.04 to make it more robust
-
 drive @v 0.1 : ($l0 < 0.6 & $l0 > 0) %found left side of the gate
 temp = $l0
 drive @v 0.1 : ($l0 >(temp+0.4)) %0.4 to make it more robust
 fwd 0.66 % 0.36(robot L) +0.35(distance from wall) -0.05(wall difference)
-turn -90
-fwd 0.2 % move forward to detect the wall
+turn -90 @v 0.1
+fwd 0.16 % move forward to detect the wall
 
 % Finding the second gate
 walldist = $irdistright
-followwall "r" walldist @v 0.15: ($irdistright>0.87)
+followwall "r" walldist @v 0.065: ($irdistright>0.87)
 fwd 0.42 %0.26+0.15+small gap(5cm)
-turn -90
-fwd 1
+turn -90 @v 0.1
+followline "bm" :($drivendist>1)
 turn -180
 followline "bm" @v 0.2 : ($crossingblackline==1)
 
@@ -104,11 +102,11 @@ laser "scanpush cmd='zoneobst'"
 background=$line0 $line1 $line2 $line3 $line4 $line5 $line6 $line7 
 eval background
 ignoreobstacles
-followline "bm" @v 0.1 : (($line0!=0) & ($line1!=0) & ($line2!=0) & ($line3!=0) & ($line4!=0) & ($line5!=0) & ($line6!=0) & ($line7!=0))
-ignoreobstacles
-followline "wm" @v 0.2 : ($crossingblackline==1)
-fwd 0.30
-turn -90
+followline "bm" @v 0.2 : ($crossingblackline==1)
+fwd 0.43
+followline "wm" @v 0.05 : ($crossingblackline==1)
+fwd 0.13 @v 0.1
+turn -90 @v 0.1
 
 % New version
 %turn 3 @v 0.2
@@ -148,9 +146,9 @@ fwd 0.15 % go along the west wall
 walldist = $irdistleft
 followwall "l" walldist @v 0.15: ($drivendist>0.3)
 drive @v 0.1 : ($irdistleft>0.87)
-fwd 0.33 % clear the corner
+fwd 0.35 % clear the corner
 turn 90 @v 0.1
-fwd 0.10 % go into the south wall
+fwd 0.15 % go into the south wall
 ignoreobstacles
 drive @v 0.1 : ($irdistfrontleft<0.16)
 ignoreobstacles
