@@ -104,7 +104,7 @@ eval background
 ignoreobstacles
 followline "bm" @v 0.2 : ($crossingblackline==1)
 fwd 0.5
-followline "wm" @v 0.05 : ($crossingblackline==1)
+followline "wm" @v 0.15 : ($crossingblackline==1)
 fwd 0.13 @v 0.1
 turn -90 @v 0.1
 
@@ -146,7 +146,7 @@ fwd 0.15 % go along the west wall
 walldist = $irdistleft
 followwall "l" walldist @v 0.15: ($drivendist>0.3)
 drive @v 0.1 : ($irdistleft>0.87)
-fwd 0.35 % clear the corner
+fwd 0.42 % clear the corner
 turn 90 @v 0.1
 fwd 0.15 % go into the south wall
 ignoreobstacles
