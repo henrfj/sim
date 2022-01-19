@@ -1,0 +1,5 @@
+log "$lineraw0" "$lineraw1" "$lineraw2" "$lineraw3" "$lineraw4" "$lineraw5" "$lineraw6" "$lineraw7" 
+wait 1
+fwd 0.3
+wait 1
+stop

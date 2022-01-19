@@ -1,9 +1,9 @@
 % This is the full code for the entire course! Have fun you guys :D
 % Remember to reset odometry when reaching a new Obstacle
-% FINAL VERSION WEDNESDAT 19.11.2021 9:52
+% FINAL VERSION WEDNESDAT 19.11.2021 21:52
 
 
-goto "mission"
+goto "boxdist"
 label "mission"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OBSTACLE 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,7 +11,8 @@ label "boxdist" %odox is facing infront of the robot and y to the left side
 laser "scanpush cmd='zoneobst'"
 followline "br" @v 0.12 : ($drivendist>0.2)
 ystart=$odoy
-followline "br" : ($l4<0.6)
+followline "br" : ($l4<0.4)
+ignoreobstacles
 followline "bm" @v 0.08 : ($l4<0.2)
 yend=$odoy
 y = ystart-yend
@@ -31,11 +32,13 @@ ignoreobstacles
 fwd 0.16 @v0.1
 fwd -1 @v0.2
 turn -90 @v0.15
+ignoreobstacles
 drive @v0.2 : ($blacklinefound==1)
 ignoreobstacles
 fwd 0.20
 ignoreobstacles
 turn -360 : ($crossingblackline==1)
+ignoreobstacles
 turn 90
 followline "bm" : ($crossingblackline==1)
 fwd 0.25
@@ -66,9 +69,9 @@ turn 90
 label "wallhug"
 laser "scanpush cmd='zoneobst'"
 log "irdistright" "irdistfrontmiddle" "$l0" "$l4"
-fwd 0.3 @v 0.2
+fwd 0.3 @v 0.1
 drive : ($irdistfrontmiddle<0.25)
-turn 90 @v 0.1
+turn 90 
 fwd 0.05
 walldist = $irdistright
 eval walldist
@@ -90,7 +93,7 @@ walldist = $irdistright
 followwall "r" walldist @v 0.065: ($irdistright>0.87)
 fwd 0.42 %0.26+0.15+small gap(5cm)
 turn -90 @v 0.1
-followline "bm" :($drivendist>1)
+followline "bm" :($drivendist>0.85)
 turn -180
 followline "bm" @v 0.2 : ($crossingblackline==1)
 
@@ -103,8 +106,8 @@ background=$line0 $line1 $line2 $line3 $line4 $line5 $line6 $line7
 eval background
 ignoreobstacles
 followline "bm" @v 0.15 : ($crossingblackline==1)
-fwd 0.45
-followline "wm" @v 0.05 : ($crossingblackline==1)
+fwd 0.43
+followline "wm" @v 0.07 : ($blacklinefound==1)
 fwd 0.17 @v 0.1
 turn -90
 
@@ -146,7 +149,7 @@ fwd 0.15 % go along the west wall
 walldist = $irdistleft
 followwall "l" walldist @v 0.15: ($drivendist>0.3)
 drive @v 0.1 : ($irdistleft>0.87)
-fwd 0.35 % clear the corner
+fwd 0.36 % clear the corner
 turn 90
 fwd 0.15 % go into the south wall
 ignoreobstacles
