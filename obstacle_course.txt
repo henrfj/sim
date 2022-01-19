@@ -11,6 +11,7 @@ label "mission"
 label "boxdist" %odox is facing infront of the robot and y to the left side
 laser "scanpush cmd='zoneobst'"
 ystart=$odoy
+eval ystart
 followline "br" @v 0.12 : ($drivendist>1)
 followline "br" @v 0.12 : ($l4<0.6)
 followline "bm" @v 0.08 : ($l4<0.2)
