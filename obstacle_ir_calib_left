@@ -1,0 +1,3 @@
+%MOVE THE OBSTACLE TO DESIRED DISTANCE FROM SENSOR
+log "$irdistleft"
+wait 2
